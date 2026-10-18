@@ -9,4 +9,4 @@ node_modules/
 *.tfstate.*
 *.tfvars
 crash.log
-.env
+.envevidence/
