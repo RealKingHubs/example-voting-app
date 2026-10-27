@@ -1,0 +1,45 @@
+imageRegistry: ghcr.io/realkinghubs
+
+apps:
+  vote:
+    image: voting-app-vote
+    tag: "e0ec2b4"
+    replicas: 2
+    port: 8080
+    runAsUser: 10001
+  result:
+    image: voting-app-result
+    tag: "e0ec2b4"
+    replicas: 1
+    port: 8080
+    runAsUser: 1000
+  worker:
+    image: voting-app-worker
+    tag: "e0ec2b4"
+    replicas: 1
+    runAsUser: 10001
+
+redis:
+  image: redis:7.4-alpine
+
+db:
+  image: postgres:16-alpine
+  secretName: db-credentials
+  storage:
+    className: gp3
+    size: 5Gi
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 384Mi
+    
+ingress:
+  enabled: true
+  className: alb
+  group: voting-app
+  # Set at install time with --set, never committed.
+  allowedCidr: ""
