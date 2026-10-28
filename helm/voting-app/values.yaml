@@ -3,20 +3,20 @@ imageRegistry: ghcr.io/realkinghubs
 apps:
   vote:
     image: voting-app-vote
-    tag: "e0ec2b4"
+    tag: "e6fe704"
     replicas: 2
     port: 8080
     runAsUser: 10001
   result:
     image: voting-app-result
-    tag: "e0ec2b4"
+    tag: "e6fe704"
     replicas: 1
     port: 8080
     runAsUser: 1000
     needsDb: true
   worker:
     image: voting-app-worker
-    tag: "e0ec2b4"
+    tag: "e6fe704"
     replicas: 1
     runAsUser: 10001
     needsDb: true
