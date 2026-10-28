@@ -13,11 +13,13 @@ apps:
     replicas: 1
     port: 8080
     runAsUser: 1000
+    needsDb: true
   worker:
     image: voting-app-worker
     tag: "e0ec2b4"
     replicas: 1
     runAsUser: 10001
+    needsDb: true
 
 redis:
   image: redis:7.4-alpine

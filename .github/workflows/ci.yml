@@ -5,6 +5,9 @@ on:
     branches: ["**"]
     paths-ignore:
       - "evidence/**"
+      - "helm/**"
+      - "terraform/**"
+      - "scripts/**"
       - "**.md"
   workflow_dispatch:
 

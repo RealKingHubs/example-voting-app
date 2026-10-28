@@ -11,7 +11,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck: 
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 15s
       timeout: 5s
       retries: 3
@@ -28,6 +28,9 @@ services:
     build: ./result
     # use nodemon rather than node for local dev
     entrypoint: nodemon --inspect=0.0.0.0 server.js
+    environment:
+      DB_USER: "${DB_USER:?Create .env from .env.example}"
+      DB_PASSWORD: "${DB_PASSWORD:?Create .env from .env.example}"
     depends_on:
       db:
         condition: service_healthy 
@@ -43,6 +46,9 @@ services:
   worker:
     build:
       context: ./worker
+    environment:
+      DB_USER: "${DB_USER:?Create .env from .env.example}"
+      DB_PASSWORD: "${DB_PASSWORD:?Create .env from .env.example}"
     depends_on:
       redis:
         condition: service_healthy 
@@ -52,7 +58,7 @@ services:
       - back-tier
 
   redis:
-    image: redis:alpine
+    image: redis:7.4-alpine
     volumes:
       - "./healthchecks:/healthchecks"
     healthcheck:
@@ -62,10 +68,10 @@ services:
       - back-tier
 
   db:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "${DB_USER:?Create .env from .env.example}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:?Create .env from .env.example}"
     volumes:
       - "db-data:/var/lib/postgresql/data"
       - "./healthchecks:/healthchecks"

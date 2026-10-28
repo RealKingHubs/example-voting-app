@@ -23,6 +23,19 @@ spec:
       containers:
         - name: {{ $name }}
           image: "{{ $.Values.imageRegistry }}/{{ $app.image }}:{{ $app.tag }}"
+          {{- if $app.needsDb }}
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.db.secretName }}
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.db.secretName }}
+                  key: password
+          {{- end }}
           {{- if $app.port }}
           ports:
             - containerPort: {{ $app.port }}
